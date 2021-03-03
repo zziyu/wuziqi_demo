@@ -9,13 +9,17 @@ function handleTouch(e) {
 
   const stepLoc = currPage.fiveStone.getStepPosition(e);
   currPage.loc = currPage.fiveStone.getStepLocation(e);
-  console.log(currPage.loc);
+  //console.log(currPage.loc);
   if(stepLoc == null) {
+    currPage.setData({
+      showStepTip:false
+    })
     console.log("stepLoc is null");
     return;
   }
   currPage.setData({
-    'stepLoc':stepLoc
+    'stepLoc':stepLoc,
+    showStepTip:true
   });
 }
 Page({
@@ -24,6 +28,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    showStepTip:false,
     /** 当前棋子相对棋盘的二位数组的坐标 */
     stepLoc: {
       x:0,
@@ -41,10 +46,17 @@ Page({
     handleTouch(e);
   },
   onChessBoardTouchEnd: function (e) {
-    //console.log(e);
+    console.log(this.loc);
+    this.setData({
+      showStepTip:false
+    })
     const loc = this.loc;
     if (loc != null) {
-      this.fiveStone.step(loc.x, loc.y);
+      var stepRes = this.fiveStone.step(loc.x, loc.y);
+      /** 下子成功再进行判赢 */
+      if (!stepRes) {
+        return;
+      }
       this.jugeWin();
       this.refreshFiveStone();
     }
@@ -54,7 +66,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.fiveStone = new FiveStone(15);
+    this.fiveStone = new FiveStone(10);
     this.setData({
       'fiveStone':this.fiveStone
     });

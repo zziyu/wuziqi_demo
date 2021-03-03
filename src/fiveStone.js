@@ -42,6 +42,8 @@ export default class FiveStone {
     this.currManType = man.black;
     /** 能否下子 */
     this.canStep = true;
+    /** 记录下子历史 */
+    this.history = []
     /** 只能悔棋一次 */
     this.canUndo = true;
     /** 记录棋盘大小 */
@@ -98,12 +100,19 @@ export default class FiveStone {
   step(x, y) {
     //console.log(x);
     //console.log(y);
-    if(!this.canStep) {
-      return;
+    /** 游戏结束或当前位置有子，则阻止下子 */
+    if(!this.canStep || this.boardPos[x][y].manType != man.none) {
+      return false;
     }
     this.boardPos[x][y].manType = this.getCurrManType();
     const currType = this.getCurrManType();
     this.currManType = currType == man.black ? man.white:man.black;
+    this.history.push({
+      manType:this.currManType,
+      x:x,
+      y:y
+    })
+    return true;
   }
 
   /**
@@ -120,24 +129,26 @@ export default class FiveStone {
         this.boardPos[i][j].manType = man.none;
       }
     }
-    this.canUndo = true;
+    /** 清空历史 */
+    this.history = [];
     this.canStep = true;
   }
 
   undo() {
-    if(!this.canUndo) {
+    if(this.history.length <= 0) {
       return;
     }
-    const currPage = getCurrentPages()[1];
-    this.boardPos[currPage.loc.x][currPage.loc.y].manType = man.none;
+    const lastManIndex = this.history.length - 1;
+    const lastMan = this.history[lastManIndex];
+    this.boardPos[lastMan.x][lastMan.y].manType = man.none;
     const currType = this.getCurrManType();
     this.currManType = currType == man.black ? man.white:man.black;
-    this.canUndo = false;
+    this.history.splice(lastManIndex, 1);
   }
 
   juge(x, y) {
     if(!this.canStep) {
-      return
+      return false;
     }
     var manCount = 1;
     var typeTarget = this.boardPos[x][y].manType;
@@ -157,6 +168,12 @@ export default class FiveStone {
       manCount++;
     }
 
+    if (manCount >= 5) {
+      this.canStep = false;
+      return true;
+    }
+    manCount = 1;
+
     /** 判断y轴 */
     for(var i = y - 1;i >= 0;i--) {
       var currType = this.boardPos[x][i].manType;
@@ -172,6 +189,12 @@ export default class FiveStone {
       }
       manCount++;
     }
+
+    if (manCount >= 5) {
+      this.canStep = false;
+      return true;
+    }
+    manCount = 1;
 
     /** 判断y=x轴 */
     var x1 = x - 1;
@@ -197,6 +220,12 @@ export default class FiveStone {
       manCount++;
     }
 
+    if (manCount >= 5) {
+      this.canStep = false;
+      return true;
+    }
+    manCount = 1;
+
     /** 判断y=-x轴 */
     var x3 = x - 1;
     var y3 = y + 1;
@@ -221,6 +250,7 @@ export default class FiveStone {
       manCount++;
     }
 
+    console.log("manCount=" + manCount);
     /** 获胜以后不允许下子，并提示游戏结束 */
     if (manCount >= 5) {
       this.canStep = false;

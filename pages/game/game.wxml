@@ -35,6 +35,13 @@
   <button class="chess-operate-bar" bindtap="undo" style="background-color: gray">悔棋</button>
 </view>
 
+<!-- 渲染下子位置提示 -->
+<view id="step-tip"
+      class="step-tip"
+      style="width:{{fiveStone.cellSizePX}}px;height:{{fiveStone.cellSizePX}}px;left:{{stepLoc.x}}px;top:{{stepLoc.y}}px;"
+      hidden="{{!showStepTip}}"
+/>
+
 <!--渲染棋子-->
 <block wx:for="{{fiveStone.boardPos}}" 
        wx:key="index"
@@ -56,5 +63,5 @@
 <!--渲染获胜信息-->
 <view class="container"
       wx:if="{{gameover}}">
-      <text>游戏结束！</text>
+      <text class="win-message">游戏结束！</text>
 </view>
