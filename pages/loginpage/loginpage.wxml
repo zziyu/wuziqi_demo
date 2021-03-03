@@ -1,0 +1,11 @@
+<!--pages/loginpage/loginpage.wxml-->
+<!-- <text>pages/loginpage/loginpage.wxml</text> -->
+<view class="logincontainer">
+  <view class="userinfo">
+    <text class="titleText">五子棋游戏</text>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfoList.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfoList.nickName}}</text>
+  </view>
+  <button class='startgamebutton' open-type="getUserInfo" bindgetuserinfo="HandleGetUserInfo">开始游戏</button>
+  <text class="scoresinfo">赢 {{scores.win}} 局，平 {{scores.draw}} 局, 输 {{scores.lose}} 局</text>
+</view>

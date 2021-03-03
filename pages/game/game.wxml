@@ -1,0 +1,60 @@
+<!--pages/game/game.wxml-->
+
+<!--使用二维数组渲染棋盘-->
+<view class="container">
+  <view id="chess-board"
+        class="chess-board"
+        ontouchstart="onChessBoardTouchStart"
+        ontouchmove="onChessBoardTouchMove"
+        ontouchend="onChessBoardTouchEnd"
+        style="width:{{fiveStone.chessboardSizePX}}px;height:{{fiveStone.chessboardSizePX}}px;"
+  >
+    <view id="row_{{rowIndex}}"
+          class="row" 
+          wx:for="{{fiveStone.boardCell}}"
+          wx:key="rowIndex"
+          wx:for-index="rowIndex"
+          wx:for-item="row">
+          <view id="cell_{{rowIndex}}_{{cellIndex}}"
+                class="cell"
+                wx:for="{{row}}" 
+                wx:key="cellIndex"
+                wx:for-index="cellIndex"
+                wx:for-item="cell"/>
+    </view>
+  </view>
+</view>
+
+<!--渲染状态栏-->
+<view class="chess-statu-bar">
+  <view class="chess-curr-man-bar">
+    <view class="chess-curr-man" style="background-color:{{fiveStone.currManType == 1 ? 'black':'white'}};"/>
+  </view>
+
+  <button class="chess-operate-bar" bindtap="restart">重来</button>
+  <button class="chess-operate-bar" bindtap="undo" style="background-color: gray">悔棋</button>
+</view>
+
+<!--渲染棋子-->
+<block wx:for="{{fiveStone.boardPos}}" 
+       wx:key="index"
+       wx:for-index="rowIndex"
+       wx:for-item="row"
+>
+
+       <block wx:for="{{row}}"
+              wx:key="cellIndex"
+              wx:for-index="cellIndex"
+              wx:for-item="currPos"
+        >
+            <view wx:if="{{currPos.manType > 0}}"
+                  style="width:{{fiveStone.cellSizePX}}px;height:{{fiveStone.cellSizePX}}px;background-color:{{currPos.manType == 1 ? '#000000':'#ffffff'}};border:1px solid #000000;border-radius:{{fiveStone.halfCellSizePX}}px;position:absolute;top:{{currPos.pos.y}}px;left:{{currPos.pos.x}}px;transform:scale(0.85);"
+            />
+        </block>
+</block>
+
+<!--渲染获胜信息-->
+<view class="container"
+      wx:if="{{gameover}}">
+      <text>游戏结束！</text>
+</view>

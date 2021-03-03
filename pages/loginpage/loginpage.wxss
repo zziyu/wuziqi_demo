@@ -1,0 +1,46 @@
+/* pages/loginpage/loginpage.wxss */
+.logincontainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  box-sizing: border-box;
+} 
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.startgamebutton {
+  border-radius: 20rpx;
+  background-color: #90b9f7;
+  color: #ffffffe0;
+  font: 1em sans-serif;
+  text-align: center;
+  width: 18rpx;
+  margin: 50rpx;
+}
+.titleText{
+  margin: 100rpx;
+  color: #7c88a3;
+  font-size:60rpx;
+}
+
+.scoresinfo{
+  color: #aaa;
+  margin: 100rpx;
+}
