@@ -180,8 +180,8 @@ export default class FiveStone {
             x:i,
             y:j
           }
-          absPos.x = absPos.x * this.cellSizePX + curTarget.offsetLeft - this.halfCellSizePX;;
-          absPos.y = absPos.y * this.cellSizePX + curTarget.offsetTop - this.halfCellSizePX;;
+          absPos.x = absPos.x * this.cellSizePX + this.boardOffset.x - this.halfCellSizePX;;
+          absPos.y = absPos.y * this.cellSizePX + this.boardOffset.x - this.halfCellSizePX;;
           /** 更新棋子的绝对位置*/
           this.boardPos[i][j].pos = absPos.clone();
           return this.step(i, j);

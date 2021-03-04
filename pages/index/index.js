@@ -44,15 +44,6 @@ Page({
       })
     }
   },
-  CreateNewCanvas: function() {
-    const ctx = wx.createCanvasContext('newCanvas')
-    ctx.setFillStyle('#e0ffff')
-    ctx.fillRect(0, 0, 199, 199)
-    ctx.draw()
-  },
-  GetCurrTime: function() {
-    this.setData({currTime: (new Date()).toString()})
-  },
   showLog: function() {
     wx.navigateTo({
       url: '/pages/logs/logs',

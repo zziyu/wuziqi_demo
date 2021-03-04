@@ -10,15 +10,6 @@
 </view>
 
 <view>
-  <button bindtap="CreateNewCanvas">创建画布</button>
-</view>
-
-<view>
-  <button bindtap="GetCurrTime">获得当前时间</button>
-  <text>{{currTime}}</text>
-</view>
-
-<view>
   <button bindtap="showLog">查看日志</button>
 </view>
 
