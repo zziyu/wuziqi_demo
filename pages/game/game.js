@@ -34,6 +34,7 @@ Page({
       x:0,
       y:0
     },
+    enabelAI:true,
     gameover:false
   },
 
@@ -55,6 +56,15 @@ Page({
       var stepRes = this.fiveStone.step(loc.x, loc.y);
       /** 下子成功再进行判赢 */
       if (!stepRes) {
+        return;
+      }
+      this.jugeWin();
+      this.refreshFiveStone();
+      if(!this.enabelAI) {
+        return;
+      }
+      var stepAIRes = this.fiveStone.stepAI(loc.x, loc.y);
+      if (!stepAIRes) {
         return;
       }
       this.jugeWin();
@@ -85,6 +95,18 @@ Page({
   undo: function() {
     this.fiveStone.undo();
     this.refreshFiveStone();
+  },
+
+  enabelAI:function() {
+    this.setData({
+      'enabelAI':true
+    })
+  },
+
+  disableAI:function() {
+    this.setData({
+      'enabelAI':false
+    })
   },
 
   refreshFiveStone: function () {

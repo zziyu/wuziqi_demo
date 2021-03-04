@@ -60,6 +60,12 @@
         </block>
 </block>
 
+<!--渲染人机按钮-->
+<view class="chess-statu-bar">
+      <button class="chess-operate-bar" bindtap="enableAI">人机对战</button>
+      <button class="chess-operate-bar" bindtap="disableAI">本地双人</button>
+</view>
+
 <!--渲染获胜信息-->
 <view class="container"
       wx:if="{{gameover}}">

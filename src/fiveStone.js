@@ -48,6 +48,11 @@ export default class FiveStone {
     this.canUndo = true;
     /** 记录棋盘大小 */
     this.chessBoardSize = chessBoardSize;
+    /** 记录棋盘相对屏幕的偏移量，在第一次触摸后设置 */
+    this.boardOffset = {
+      x:0,
+      y:0
+    }
   }
 
   /**
@@ -60,6 +65,7 @@ export default class FiveStone {
           x: chessBoard.offsetLeft,
           y: chessBoard.offsetTop
       };
+      this.boardOffset = offset.clone();
       var touch = e.touches[0];
       /** 棋子相对棋盘的位置 */
       var clientPos = {
@@ -89,8 +95,8 @@ export default class FiveStone {
         return null;
       }
       var absPos = stepPos.clone();
-      absPos.x = absPos.x * this.cellSizePX + curTarget.offsetLeft - this.halfCellSizePX;;
-      absPos.y = absPos.y * this.cellSizePX + curTarget.offsetTop - this.halfCellSizePX;;
+      absPos.x = absPos.x * this.cellSizePX + this.boardOffset.x - this.halfCellSizePX;;
+      absPos.y = absPos.y * this.cellSizePX + this.boardOffset.y - this.halfCellSizePX;;
       /** 更新棋子的绝对位置，用来渲染的棋子的绝对位置与触摸点的绝对位置是不同的 */
       this.boardPos[stepPos.x][stepPos.y].pos = absPos.clone();
       return absPos;
@@ -113,6 +119,75 @@ export default class FiveStone {
       y:y
     })
     return true;
+  }
+
+  /** AI下子 */
+  stepAI(x, y) {
+    //console.log(x);
+    //console.log(y);
+    /** 游戏结束或当前位置有子，则阻止下子 */
+    var xright = x + 1;
+    var xleft = x - 1;
+    var yup = y - 1;
+    var ydown = y + 1;
+    var xres = 0;
+    var yres = 0;
+    if(this.boardPos[xright][y].manType == man.none) {
+      xres = xright;
+      yres = y;
+    } else if(this.boardPos[xleft][y].manType == man.none) {
+      xres = xleft;
+      yres = y;
+    } else if(this.boardPos[x][yup].manType == man.none) {
+      xres = x;
+      yres = yup;
+    } else if(this.boardPos[x][ydown].manType == man.none) {
+      xres = x;
+      yres = ydown;
+    } else if(this.boardPos[xright][ydown].manType == man.none) {
+      xres = xright;
+      yres = ydown;
+    } else if(this.boardPos[xright][yup].manType == man.none) {
+      xres = xright;
+      yres = yup;
+    } else if(this.boardPos[xleft][ydown].manType == man.none) {
+      xres = xleft;
+      yres = ydown;
+    } else if(this.boardPos[xleft][yup].manType == man.none) {
+      xres = xleft;
+      yres = yup;
+    } else {
+      console.log("ai find failed!");
+      return this.setpAnyWhereNone();
+    }
+    console.log("ai step at: " + xres +"," + yres);
+    var absPos = {
+      x:xres,
+      y:yres
+    }
+    absPos.x = absPos.x * this.cellSizePX + this.boardOffset.x - this.halfCellSizePX;;
+    absPos.y = absPos.y * this.cellSizePX + this.boardOffset.y - this.halfCellSizePX;;
+    /** 更新棋子的绝对位置*/
+    this.boardPos[xres][yres].pos = absPos.clone();
+    return this.step(xres, yres);
+  }
+
+  setpAnyWhereNone() {
+    for (var i in this.boardPos) {
+      for (var j in this.boardPos[i]) {
+        if(this.boardPos[i][j].manType == man.none) {
+          var absPos = {
+            x:i,
+            y:j
+          }
+          absPos.x = absPos.x * this.cellSizePX + curTarget.offsetLeft - this.halfCellSizePX;;
+          absPos.y = absPos.y * this.cellSizePX + curTarget.offsetTop - this.halfCellSizePX;;
+          /** 更新棋子的绝对位置*/
+          this.boardPos[i][j].pos = absPos.clone();
+          return this.step(i, j);
+        }
+      }
+    }
   }
 
   /**
@@ -249,8 +324,6 @@ export default class FiveStone {
       y4--;
       manCount++;
     }
-
-    console.log("manCount=" + manCount);
     /** 获胜以后不允许下子，并提示游戏结束 */
     if (manCount >= 5) {
       this.canStep = false;
