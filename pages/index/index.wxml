@@ -11,12 +11,11 @@
 
 <view>
   <button bindtap="CreateNewCanvas">创建画布</button>
-  <canvas type="2D" canvas-id="newCanvas" style="border: 1px solid; border-right: 1px solid #7e2ce9;"/>
 </view>
 
 <view>
   <button bindtap="GetCurrTime">获得当前时间</button>
-  <text>{{msg + currTime}}</text>
+  <text>{{currTime}}</text>
 </view>
 
 <view>

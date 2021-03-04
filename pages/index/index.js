@@ -44,9 +44,6 @@ Page({
       })
     }
   },
-  onShow() {
-    this.setData({msg: "啊吧啊吧"})
-  },
   CreateNewCanvas: function() {
     const ctx = wx.createCanvasContext('newCanvas')
     ctx.setFillStyle('#e0ffff')
@@ -54,7 +51,6 @@ Page({
     ctx.draw()
   },
   GetCurrTime: function() {
-    this.setData({msg: "当前时间"})
     this.setData({currTime: (new Date()).toString()})
   },
   showLog: function() {
