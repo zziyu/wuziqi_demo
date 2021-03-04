@@ -38,6 +38,8 @@ export default class FiveStone {
         self.halfCellSizePX = self.cellSizePX * 0.5;
       }
     });
+    /** 初始化AI状态 */
+    this.enableAI = false;
     /** 初始化当前棋子的类型 */
     this.currManType = man.black;
     /** 能否下子 */
@@ -101,6 +103,19 @@ export default class FiveStone {
       this.boardPos[stepPos.x][stepPos.y].pos = absPos.clone();
       return absPos;
   }
+
+/** 设置AI状态 */
+enable_ai() {
+  this.enableAI = true;
+}
+
+disable_ai() {
+  this.enableAI = false;
+}
+
+getAI() {
+  return this.enableAI;
+}
 
   /** 通过绝对位置渲染棋子 */
   step(x, y) {

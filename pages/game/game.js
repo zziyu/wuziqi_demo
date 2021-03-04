@@ -34,7 +34,7 @@ Page({
       x:0,
       y:0
     },
-    enabelAI:true,
+    enableAI:false,
     gameover:false
   },
 
@@ -60,7 +60,8 @@ Page({
       }
       this.jugeWin();
       this.refreshFiveStone();
-      if(!this.enabelAI) {
+      if(this.fiveStone.getAI() == false) {
+        console.log("disableAI");
         return;
       }
       var stepAIRes = this.fiveStone.stepAI(loc.x, loc.y);
@@ -97,16 +98,18 @@ Page({
     this.refreshFiveStone();
   },
 
-  enabelAI:function() {
-    this.setData({
-      'enabelAI':true
-    })
+  enableAI:function() {
+    this.fiveStone.enable_ai();
+    if(this.fiveStone.getAI() == false) {
+      console.log("set enable failed!");
+    }
   },
 
   disableAI:function() {
-    this.setData({
-      'enabelAI':false
-    })
+    this.fiveStone.disable_ai();
+    if(this.fiveStone.getAI() == true) {
+      console.log("set disable failed!");
+    }
   },
 
   refreshFiveStone: function () {
