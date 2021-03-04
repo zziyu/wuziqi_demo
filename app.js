@@ -2,7 +2,7 @@
 App({
   onLaunch() {
     wx.cloud.init({
-      env:'wxgame-6g2vy1ed5ff2f118'
+      env:'wxgame-6g2vy1ed5ff2f118',
     })
     // 展示本地存储能力
     const logs = wx.getStorageSync('logs') || []
